@@ -34,6 +34,11 @@ var http = require('http'),
 console.log('Server Running on port ' + port.toString() + '\n');
 
 module.exports = http.createServer(function(request,response){
+    if (path.normalize(decodeURI(request.url)) !== decodeURI(request.url)) {
+        response.statusCode = 403;
+        response.end();
+        return;
+    }
     //debugger;
     var uri = url.parse(request.url).pathname,
         filename = path.join(process.cwd(),uri);
